@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'auth.dart';
+import 'package:flutter/rendering.dart';
+
 
 class HomePage extends StatelessWidget {
   HomePage({this.auth,this.onSignedOut});
@@ -27,11 +29,7 @@ class HomePage extends StatelessWidget {
           )
         ],
       ),
-      body: new Container(
-        child: new Center(
-          child: new Text("Welcome", style: new TextStyle(fontSize: 32.0)),
-        ),
-      ),
+      body: new Text("Hello"),
     );
   }
 }
