@@ -1,49 +1,20 @@
 import 'package:flutter/material.dart';
+import 'auth.dart';
+import 'root_page.dart';
 
-void main() => runApp(new MyApp());
-
-class MyApp extends StatelessWidget{
-  @override
-  Widget build(BuildContext context){
-      return new MaterialApp(
-        home: new VisitorPass(),
-        theme: new ThemeData(
-          primarySwatch: Colors.blue
-        )
-      );
-  }
+void main() {
+  runApp(new MyApp());
 }
 
-class VisitorPass extends StatefulWidget {
+class MyApp extends StatelessWidget {
   @override
-  State createState() => new VisitorPassState();
-}
-  
-class VisitorPassState extends State<VisitorPass> {
-  String _textString = "Hello Flutter";
-  @override
-  Widget build(BuildContext context){
-    return Column(
-      children: <Widget>[Text(_textString, style: TextStyle(fontSize: 30),
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+      title: "Visitor Pass",
+      theme: new ThemeData(
+        primarySwatch: Colors.blue,
       ),
-      RaisedButton(
-        child: Text("Button"),
-        onPressed: (){
-          _doSomething();
-          },
-        ),
-      ],
+      home: new RootPage(auth: new Auth())
     );
   }
 }
-
-void _doSomething(){
-  setState((){
-        
-      });
-    }
-  
-  void setState(Null Function() param0) {
-}
-  
-

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "85165558812",
+    "firebase_url": "https://visitorpass-b7636.firebaseio.com",
+    "project_id": "visitorpass-b7636",
+    "storage_bucket": "visitorpass-b7636.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85165558812:android:2a36df1aca14908a",
+        "android_client_info": {
+          "package_name": "com.example.visitor_pass"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "85165558812-6r0htjp1rb5lo4o22ae0bi0hjn20r4is.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAk4vjGiD3Inhc_SdPNYKClWXGgiUnCvao"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "85165558812-6r0htjp1rb5lo4o22ae0bi0hjn20r4is.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
