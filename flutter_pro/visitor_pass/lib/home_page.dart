@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:visitor_pass/screen/mainscreen.dart';
 import 'auth.dart';
 import 'package:flutter/rendering.dart';
-import 'package:visitor_pass/screen/HomeScreen.dart';
-import 'package:visitor_pass/screen/SplashScreen.dart';
-import 'package:visitor_pass/constant/constant.dart';
 
 
 class HomePage extends StatelessWidget {
@@ -22,28 +20,23 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Welcome"),
-        actions: <Widget>[
-          new FlatButton(
-            child: new Text("Logout", style: new TextStyle(fontSize: 17.0, color: Colors.white),),
-            onPressed: _signOut,
-          )
-        ],
+    return new MaterialApp(
+      title: 'Visitor Pass',
+      theme: ThemeData(
+      primarySwatch: Colors.pink,
       ),
-    );
-     new MaterialApp(
-    debugShowCheckedModeBanner: false,
-    theme: ThemeData(
-      primarySwatch: Colors.blue,
-    ),
-    title: 'QR GENERATOR',
-    routes: <String, WidgetBuilder>{
-      HOME_SCREEN: (BuildContext context) => HomeScreen(),
-    },
-    home: SplashScreen(),
+      home: Scaffold(
+        appBar: new AppBar(
+          title: new Text("QR Generator"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Logout", style: new TextStyle(fontSize: 17.0, color: Colors.white),),
+              onPressed: _signOut,
+            ),
+          ],
+        ),
+        body: MainScreen(),
+      ),
     );
   }
 }

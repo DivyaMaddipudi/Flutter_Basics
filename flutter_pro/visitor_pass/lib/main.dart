@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       title: "Visitor Pass",
       theme: new ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.pink,
       ),
       home: new RootPage(auth: new Auth())
     );
