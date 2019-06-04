@@ -14,8 +14,7 @@ class _CaptureImageState extends State<CaptureImage> {
 
   File _imageFile;
   bool _uploaded = false;
-  final String fileName = Random().nextInt(10000).toString() +'.jpg';
-  StorageReference _reference = FirebaseStorage.instance.ref().child('myimage.jpg').child('${_primaryId()}');
+StorageReference _reference = FirebaseStorage.instance.ref().child("myimage.jpg");
 
   Future getImage (bool isCamera) async {
     File image;

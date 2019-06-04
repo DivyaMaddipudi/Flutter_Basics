@@ -104,9 +104,10 @@ class _LoginPageState extends State<LoginPage> {
       ];
     } else {
   
-        return [
-
-        new TextFormField(
+        return [  
+          Wrap(
+      children: <Widget>[ 
+            TextFormField(
             decoration: new InputDecoration(labelText: 'Society Name'),
             validator: (value) => value.isEmpty ? 'Society name can\'t be empty' : null,
             onSaved: (value) => _email = value,
@@ -135,7 +136,9 @@ class _LoginPageState extends State<LoginPage> {
             validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
             onSaved: (value) => _password = value,              
           ),
-        ];
+         ],
+        ), 
+       ];
       }
     }
 
