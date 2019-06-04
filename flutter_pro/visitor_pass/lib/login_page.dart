@@ -77,6 +77,7 @@ class _LoginPageState extends State<LoginPage> {
           padding: EdgeInsets.all(16.0),
           child: new Form(
             key: formKey,
+            
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: buildInputs() + buildSubmitButtons(),
@@ -87,8 +88,8 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     List<Widget> buildInputs() {
+      if(_formType == FormType.login){
       return [
-
         new TextFormField(
             decoration: new InputDecoration(labelText: 'Email'),
             validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
@@ -101,6 +102,41 @@ class _LoginPageState extends State<LoginPage> {
             onSaved: (value) => _password = value,              
           ),
       ];
+    } else {
+  
+        return [
+
+        new TextFormField(
+            decoration: new InputDecoration(labelText: 'Society Name'),
+            validator: (value) => value.isEmpty ? 'Society name can\'t be empty' : null,
+            onSaved: (value) => _email = value,
+          ),
+
+        new TextFormField(
+            decoration: new InputDecoration(labelText: 'Company Name'),
+            validator: (value) => value.isEmpty ? 'Company name can\'t be empty' : null,
+            onSaved: (value) => _email = value,
+          ),
+
+        new TextFormField(
+            decoration: new InputDecoration(labelText: 'Location'),
+            validator: (value) => value.isEmpty ? 'Location can\'t be empty' : null,
+            onSaved: (value) => _email = value,
+          ),
+
+        new TextFormField(
+            decoration: new InputDecoration(labelText: 'Email'),
+            validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
+            onSaved: (value) => _email = value,
+          ),
+          new TextFormField(
+            decoration: new InputDecoration(labelText: 'Password'),
+            obscureText: true,
+            validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
+            onSaved: (value) => _password = value,              
+          ),
+        ];
+      }
     }
 
     List<Widget> buildSubmitButtons() {
@@ -125,8 +161,7 @@ class _LoginPageState extends State<LoginPage> {
           new FlatButton(
             child: new Text('Have an account? Login', style: new TextStyle(fontSize: 20.0)),
             onPressed: moveToLogin,
-        ),                       
-
+        ), 
         ];
       }
     }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-
+import 'package:firebase_database/firebase_database.dart';
+import 'package:visitor_pass/images/capture.dart';
+import 'package:visitor_pass/screen/showdata.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -8,93 +9,120 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  static const double _topSectionTopPadding = 50.0;
-  static const double _topSectionBottomPadding = 20.0;
-  static const double _topSectionHeight = 50.0;
-
-  String _dataString = 'Hello !';
-  String _inputErrorText;
-  final TextEditingController _textController = TextEditingController();
+  GlobalKey<FormState> _key = new GlobalKey();
+  bool _autovalidate = false;
+  String name,email,phonenumber,purpose;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _contentWidget(),
-      resizeToAvoidBottomPadding: true,
+    return MaterialApp(
+        home: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(15.0),
+            child: Form(
+              key: _key,
+              autovalidate: _autovalidate,
+              child: formUI(),
+            ),
+          ),
+        ),
     );
   }
+  Widget formUI() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        
+       TextFormField(
+        decoration: InputDecoration(labelText: "Name",
+        hintText: "Enter Name"),
+        onSaved: (val) {
+          name = val;
+        },
+        validator: validateName,
+        maxLength: 50,
+       ),
+       TextFormField(
+        decoration: InputDecoration(labelText: "Email",
+          hintText: "Enter Email"),
+        onSaved: (val) {
+          email = val;
+        },
+        validator: validateEmail,
+        maxLength: 100,
+       ),
 
-  @override
-  void didUpdateWidget(MainScreen oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    setState(() {});
-  }
+       TextFormField(
+        decoration: InputDecoration(labelText: "PhoneNumber",
+        hintText: "Enter PhoneNumber"),
+        keyboardType: TextInputType.number,
+        onSaved: (val) {
+          phonenumber = val;
+        },
+        validator: validatePhonenumber,
+        maxLength: 10,
+       ),
 
-  Widget _contentWidget() {
-    return Container(
-      color: const Color(0xFFFFFFFF),
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(
-              top: _topSectionTopPadding,
-              left: 30.0,
-              right: 20.0,
-              bottom: _topSectionBottomPadding,
-            ),
-            child: Container(
-              height: _topSectionHeight,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                   Expanded(
-                    child: TextField(
-                      autofocus: true,
-                      controller: _textController,
-                      decoration: InputDecoration(
-                        labelText: "Phone Number",
-                        errorText: _inputErrorText,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
-                    child: FlatButton(
-                      child: const Text('SUBMIT'),
-                      onPressed: () {
-                        setState(() {
-                          _dataString = _textController.text;
-                          _inputErrorText = null;
-                        });
-                      },
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Expanded(
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: QrImage(
-                  data: _dataString,
-                  gapless: false,
-                  foregroundColor: const Color(0xFF111111),
-                  onError: (dynamic ex) {
-                    print('[QR] ERROR - $ex');
-                    setState(() {
-                      _inputErrorText =
-                          'Error! Maybe your input value is too long?';
-                    });
-                  },
-                ),
-              ),
-            ),
-          ),
-        ],
+       TextFormField(
+        decoration: InputDecoration(labelText: "Purpose",
+        hintText: "Enter Purpose"),
+        onSaved: (val) {
+          purpose = val;
+        },
+        validator: validatePurpose,
+        maxLines: 5,
+        maxLength: 256,
+       ),
+      Center(
+       child: RaisedButton(
+         onPressed: _sendToServer, child: Text("SUBMIT"),
+       ),
       ),
+      Center(
+        child: RaisedButton(
+         onPressed: () {
+           Navigator.push(context, 
+              MaterialPageRoute(builder: (context) => CaptureImage()));
+         },
+         child: Text("Capture Image"),
+       )
+      ),
+      ],
     );
+  }
+
+_sendToServer() {
+  if(_key.currentState.validate()) {
+    _key.currentState.save();
+    DatabaseReference ref = FirebaseDatabase.instance.reference();
+    var data ={
+      "name": name,
+      "email": email,
+      "phonenumber": phonenumber,
+      "purpose": purpose
+    };
+    ref.child('Visitors').push().set(data).then((v){
+      _key.currentState.reset();
+    });
+  } else {
+    setState(() {
+     _autovalidate = true; 
+    });
+  }
+
+}
+
+String validateName(String val) {
+  return val.length == 0 ? "Enter Name First" : null;
+}
+
+String validateEmail(String val) {
+  return val.length == 0 ? "Enter Email First" : null;
+}
+String validatePhonenumber(String val) {
+  return val.length == 0 ? "Enter Phonenumber First" : null;
+}
+String validatePurpose(String val) {
+  return val.length == 0 ? "Enter Purpose First" : null;
   }
 }

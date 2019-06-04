@@ -27,7 +27,7 @@ class HomePage extends StatelessWidget {
       ),
       home: Scaffold(
         appBar: new AppBar(
-          title: new Text("QR Generator"),
+          title: new Text("Visitor Pass"),
           actions: <Widget>[
             new FlatButton(
               child: new Text("Logout", style: new TextStyle(fontSize: 17.0, color: Colors.white),),
