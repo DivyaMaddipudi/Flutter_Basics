@@ -105,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
     } else {
   
         return [  
-          Wrap(
+             Wrap(
       children: <Widget>[ 
             TextFormField(
             decoration: new InputDecoration(labelText: 'Society Name'),

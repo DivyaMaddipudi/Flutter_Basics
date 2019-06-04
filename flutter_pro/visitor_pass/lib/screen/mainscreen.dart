@@ -1,7 +1,11 @@
+import 'dart:io';
+import 'dart:math';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:visitor_pass/images/capture.dart';
-import 'package:visitor_pass/screen/showdata.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+
 
 class MainScreen extends StatefulWidget {
   @override
@@ -11,11 +15,40 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   GlobalKey<FormState> _key = new GlobalKey();
   bool _autovalidate = false;
-  String name,email,phonenumber,purpose;
+  String name,email,phonenumber,purpose,image;
+  File _imageFile;
+  bool _uploaded = false;
+  String filepath;
+
+StorageReference _reference = FirebaseStorage.instance.ref().child("myimage.jpg");
+
+  Future getImage (bool isCamera) async {
+    File image;
+    if(isCamera) {
+      image = await ImagePicker.pickImage(source: ImageSource.camera);
+    }
+    setState(() {
+     _imageFile = image; 
+    });
+  }
+
+  Future uploadImage() async {
+
+    
+    StorageUploadTask uploadTask = _reference.putFile(_imageFile);
+    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+
+    setState(() {
+     _uploaded = true; 
+    });
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
         home: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(15.0),
@@ -34,8 +67,8 @@ class _MainScreenState extends State<MainScreen> {
       children: <Widget>[
         
        TextFormField(
-        decoration: InputDecoration(labelText: "Name",
-        hintText: "Enter Name"),
+        decoration: InputDecoration(labelText: "Visitor Name",
+        hintText: "Enter Visitor's Name"),
         onSaved: (val) {
           name = val;
         },
@@ -73,20 +106,34 @@ class _MainScreenState extends State<MainScreen> {
         maxLines: 5,
         maxLength: 256,
        ),
-      Center(
+      SizedBox(
+        width: 375,
        child: RaisedButton(
          onPressed: _sendToServer, child: Text("SUBMIT"),
        ),
       ),
-      Center(
+        SizedBox(
+        width: 375,      
         child: RaisedButton(
-         onPressed: () {
-           Navigator.push(context, 
-              MaterialPageRoute(builder: (context) => CaptureImage()));
-         },
-         child: Text("Capture Image"),
+              child: Text("CAPTURE IMAGE"),
+              onPressed: () {
+                getImage(true);
+              },
        )
       ),
+            _imageFile == null ? Container() :Image.file(
+              _imageFile,
+              height: 300.0,
+              width: 400.0
+              ),
+              _imageFile == null ? Container() : SizedBox(width: 375,
+              child: RaisedButton(
+                child: Text("UPLOAD"),
+                onPressed: () {
+                  uploadImage();
+                },
+              ),
+              ),
       ],
     );
   }
@@ -99,7 +146,8 @@ _sendToServer() {
       "name": name,
       "email": email,
       "phonenumber": phonenumber,
-      "purpose": purpose
+      "purpose": purpose,
+      "image": image
     };
     ref.child('Visitors').push().set(data).then((v){
       _key.currentState.reset();
