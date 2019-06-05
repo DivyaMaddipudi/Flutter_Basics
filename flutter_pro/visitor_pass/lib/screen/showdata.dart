@@ -16,7 +16,6 @@ class _ShowDataPageState extends State<ShowDataPage> {
       body: Container(
         child: Text("Data"),
       ),
-      
     );
   }
 }

@@ -1,3 +1,5 @@
+//Included in main screen
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -12,19 +14,18 @@ class CaptureImage extends StatefulWidget {
 }
 
 class _CaptureImageState extends State<CaptureImage> {
-
   File file;
   bool _uploaded = false;
   String filepath;
 //StorageReference _reference = FirebaseStorage.instance.ref().child("myimage.jpg");
 
-  Future getImage (bool isCamera) async {
+  Future getImage(bool isCamera) async {
     File image;
-    if(isCamera) {
+    if (isCamera) {
       image = await ImagePicker.pickImage(source: ImageSource.camera);
     }
     setState(() {
-     file = image; 
+      file = image;
     });
   }
 
@@ -35,30 +36,28 @@ class _CaptureImageState extends State<CaptureImage> {
     final File file = File("${tempDir.path}/$fileName");
     file.writeAsBytes(bytes.buffer.asInt8List(), mode: FileMode.write);
 
-    final StorageReference _reference = FirebaseStorage.instance.ref().child(fileName);
+    final StorageReference _reference =
+        FirebaseStorage.instance.ref().child(fileName);
     final StorageUploadTask uploadTask = _reference.putFile(file);
-    final StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;  
+    final StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
     var downloadURL = (await uploadTask.onComplete).ref.getDownloadURL();
     var _path = downloadURL.toString();
 
-        print(_path);
+    print(_path);
 
-    
     //StorageUploadTask uploadTask = _reference.putFile(_imageFile);
     //StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
 
     setState(() {
-     _uploaded = true; 
+      _uploaded = true;
     });
-
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text("Capture Image"),
+        title: Text("Capture Image"),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -69,20 +68,20 @@ class _CaptureImageState extends State<CaptureImage> {
                 getImage(true);
               },
             ),
-            file == null ? Container() :Image.file(
-              file,
-              height: 300.0,
-              width: 400.0
-              ),
-              file == null ? Container() :RaisedButton(
-                child: Text("Upload"),
-                onPressed: () {
-                  uploadImage();
-                },
-              ),
-         ],
-        )
-      )
+            file == null
+                ? Container()
+                : Image.file(file, height: 300.0, width: 400.0),
+            file == null
+                ? Container()
+                : RaisedButton(
+                    child: Text("Upload"),
+                    onPressed: () {
+                      uploadImage();
+                    },
+                  ),
+          ],
+        ),
+      ),
     );
   }
 }

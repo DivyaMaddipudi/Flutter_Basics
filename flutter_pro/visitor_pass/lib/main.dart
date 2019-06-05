@@ -10,12 +10,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Visitor Pass",
-      theme: new ThemeData(
-        primarySwatch: Colors.pink,
-      ),
-      home: new RootPage(auth: new Auth())
-    );
+        debugShowCheckedModeBanner: false,
+        title: "Visitor Pass",
+        theme: new ThemeData(
+          primarySwatch: Colors.pink,
+        ),
+        home: new RootPage(auth: new Auth()));
   }
 }
